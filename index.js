@@ -12,7 +12,7 @@ while (true) {
     history: conversationHistory
   });
 
-  console.log(`Amjad Masad: ${answer}\n`);
-  
-  conversationHistory.push(`Human: ${question}`, `Amjad Masad: ${answer}`)
+  console.log(`SpineGPT: ${answer}\n`);
+
+  conversationHistory.push({type: "human", text: question}, {type: "ai", text: answer});
 }

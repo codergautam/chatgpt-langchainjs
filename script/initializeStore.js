@@ -1,11 +1,12 @@
 import glob from 'glob';
 import fs from 'fs'
 import { CharacterTextSplitter } from "langchain/text_splitter";
-import { HNSWLib } from "langchain/vectorstores";
-import { OpenAIEmbeddings } from 'langchain/embeddings';
-
+import { HNSWLib } from "langchain/vectorstores/hnswlib";
+import { OpenAIEmbeddings } from 'langchain/embeddings/openai';
+import { config } from 'dotenv';
+config();
 const data = [];
-const files = await new Promise((resolve, reject) => 
+const files = await new Promise((resolve, reject) =>
   glob("training/**/*.md", (err, files) => err ? reject(err) : resolve(files))
 );
 
@@ -23,14 +24,18 @@ const textSplitter = new CharacterTextSplitter({
 let docs = [];
 for (const d of data) {
   const docOutput = textSplitter.splitText(d);
+  if(docOutput.length > 1) {
   docs = [...docs, ...docOutput];
+  } else {
+  docs.push(d);
+  }
 }
 
 console.log("Initializing Store...");
 
 const store = await HNSWLib.fromTexts(
   docs,
-  docs.map((_, i) => ({ id: i })),
+  docs.map((doc,i) => {return {id: i+1}}),
   new OpenAIEmbeddings({
     openAIApiKey: process.env.OPENAI_API_KEY
   })
