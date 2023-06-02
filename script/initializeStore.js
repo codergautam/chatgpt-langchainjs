@@ -10,6 +10,10 @@ const files = await new Promise((resolve, reject) =>
   glob("training/**/*.md", (err, files) => err ? reject(err) : resolve(files))
 );
 
+if(files.length == 0) {
+  throw new Error("No training files found.  Please add some training files to the training directory.");
+}
+
 for (const file of files) {
   data.push(fs.readFileSync(file, 'utf-8'));
 }
