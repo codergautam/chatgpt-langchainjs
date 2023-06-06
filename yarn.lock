@@ -15,6 +15,13 @@
   resolved "https://registry.yarnpkg.com/@fortaine/fetch-event-source/-/fetch-event-source-3.0.6.tgz#b8552a2ca2c5202f5699b93a92be0188d422b06e"
   integrity sha512-621GAuLMvKtyZQ3IA6nlDWhV1V/7PGOTNIGLUifxt0KzM+dZIweJ6F3XvQF3QnqeNfS1N7WQ0Kil1Di/lhChEw==
 
+"@pinecone-database/pinecone@^0.1.6":
+  version "0.1.6"
+  resolved "https://registry.yarnpkg.com/@pinecone-database/pinecone/-/pinecone-0.1.6.tgz#13374ae9462c8eea0dc26683cafeddc4e7c0375f"
+  integrity sha512-tCnVc28udecthhgSBTdcMhYEW+xsR++AdZasp+ZE/AvUD1hOR2IR3edjk9m0sDxZyvXbno2KeqUbLIOZr7sCTw==
+  dependencies:
+    cross-fetch "^3.1.5"
+
 "@types/node@^18.0.6":
   version "18.14.1"
   resolved "https://registry.yarnpkg.com/@types/node/-/node-18.14.1.tgz#90dad8476f1e42797c49d6f8b69aaf9f876fc69f"
@@ -105,10 +112,10 @@ delayed-stream@~1.0.0:
   resolved "https://registry.yarnpkg.com/delayed-stream/-/delayed-stream-1.0.0.tgz#df3ae199acadfb7d440aaae0b29e2272b24ec619"
   integrity sha512-ZySD7Nf91aLB0RxL4KGrKHBXl7Eds1DAmEdcoVawXnLD7SDhpNgtuII2aAkg7a7QS41jxPSZ17p4VdGnMHk3MQ==
 
-dotenv@^16.1.3:
-  version "16.1.3"
-  resolved "https://registry.yarnpkg.com/dotenv/-/dotenv-16.1.3.tgz#0c67e90d0ddb48d08c570888f709b41844928210"
-  integrity sha512-FYssxsmCTtKL72fGBSvb1K9dRz0/VZeWqFme/vSb7r7323x4CRaHu4LvQ5JG3+s6yt2YPbBrkpiEODktfyjI9A==
+dotenv@^16.1.4:
+  version "16.1.4"
+  resolved "https://registry.yarnpkg.com/dotenv/-/dotenv-16.1.4.tgz#67ac1a10cd9c25f5ba604e4e08bc77c0ebe0ca8c"
+  integrity sha512-m55RtE8AsPeJBpOIFKihEmqUcoVncQIwo7x9U8ZwLEZw9ZpXboz2c+rvog+jUaJvVrZ5kBOeYQBX5+8Aa/OZQw==
 
 eventemitter3@^4.0.4:
   version "4.0.7"
@@ -213,10 +220,10 @@ jsonpointer@^5.0.1:
   resolved "https://registry.yarnpkg.com/jsonpointer/-/jsonpointer-5.0.1.tgz#2110e0af0900fd37467b5907ecd13a7884a1b559"
   integrity sha512-p/nXbhSEcu3pZRdkW1OfJhpsVtW1gd4Wa1fnQc9YLiTfAjn0312eMKimbdIQzuZl9aa9xUGaRlP9T/CJE/ditQ==
 
-langchain@^0.0.88:
-  version "0.0.88"
-  resolved "https://registry.yarnpkg.com/langchain/-/langchain-0.0.88.tgz#bc83f9cd569c3dceb4d2773270eb94e8cb1fe61d"
-  integrity sha512-D0SVfXhZejI/mLM4LG6WGGJlROp2/LLXqPq6W5P5/Zq7Z1sbKQBza3ywXPRevjKe+PtIbQ4VOLtynmuGIqy9xg==
+langchain@^0.0.91:
+  version "0.0.91"
+  resolved "https://registry.yarnpkg.com/langchain/-/langchain-0.0.91.tgz#8c940eda0133bb2d242f83d2e9d31194a017ec95"
+  integrity sha512-oCilhNDZDSt8rdvnuVv5J3BIZ1FwCccdqdO6xHddiCko26UkAJ+wKRWmV8YQOYUDZzoRjp4ogDIifETfhfb30w==
   dependencies:
     "@anthropic-ai/sdk" "^0.4.3"
     ansi-styles "^5.0.0"

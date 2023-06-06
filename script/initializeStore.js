@@ -2,9 +2,25 @@ import glob from 'glob';
 import fs from 'fs'
 import { CharacterTextSplitter } from "langchain/text_splitter";
 import { HNSWLib } from "langchain/vectorstores/hnswlib";
+import { PineconeClient } from "@pinecone-database/pinecone";
+import { PineconeStore } from "langchain/vectorstores/pinecone";
+import { Document } from "langchain/document";
 import { OpenAIEmbeddings } from 'langchain/embeddings/openai';
 import { config } from 'dotenv';
 config();
+
+const client = new PineconeClient();
+let pineconeIndex;
+if(process.env.PINECONE=="true") {
+await client.init({
+  apiKey: process.env.PINECONE_API_KEY,
+  environment: process.env.PINECONE_ENVIRONMENT,
+});
+console.log("Pinecone Initialized");
+pineconeIndex = client.Index(process.env.PINECONE_INDEX);
+}
+
+
 const data = [];
 const files = await new Promise((resolve, reject) =>
   glob("training/**/*.md", (err, files) => err ? reject(err) : resolve(files))
@@ -37,18 +53,34 @@ for (const d of data) {
 
 console.log("Initializing Store...");
 
-const store = await HNSWLib.fromTexts(
+let store;
+if(pineconeIndex) {
+  await PineconeStore.fromTexts(
+    docs,
+    docs.map((doc,i) => {return {id: i+1}}),
+    new OpenAIEmbeddings({
+      openAIApiKey: process.env.OPENAI_API_KEY
+    }),
+    {
+      pineconeIndex,
+    }
+  )
+} else {
+ store = await HNSWLib.fromTexts(
   docs,
   docs.map((doc,i) => {return {id: i+1}}),
   new OpenAIEmbeddings({
     openAIApiKey: process.env.OPENAI_API_KEY
   })
 )
+}
 
 console.clear();
 console.log("Saving Vectorstore");
 
-store.save("vectorStore")
+if(!pineconeIndex) {
+  await store.save("vectorStore");
+}
 
 console.clear();
 console.log("VectorStore saved");
