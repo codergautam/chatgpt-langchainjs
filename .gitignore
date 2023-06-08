@@ -1,3 +1,6 @@
 node_modules
 .env
 vectorStore/
+package-lock.json
+training/
+yarn.lock

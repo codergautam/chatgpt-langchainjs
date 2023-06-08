@@ -1,12 +1,15 @@
 import glob from 'glob';
 import fs from 'fs'
-import { CharacterTextSplitter } from "langchain/text_splitter";
+import { CharacterTextSplitter, RecursiveCharacterTextSplitter, TokenTextSplitter } from "langchain/text_splitter";
 import { HNSWLib } from "langchain/vectorstores/hnswlib";
 import { PineconeClient } from "@pinecone-database/pinecone";
 import { PineconeStore } from "langchain/vectorstores/pinecone";
 import { Document } from "langchain/document";
 import { OpenAIEmbeddings } from 'langchain/embeddings/openai';
 import { config } from 'dotenv';
+// cli runner
+import { execSync } from 'child_process';
+
 config();
 
 const client = new PineconeClient();
@@ -22,8 +25,17 @@ pineconeIndex = client.Index(process.env.PINECONE_INDEX);
 
 
 const data = [];
+const pdfs = await new Promise((resolve, reject) =>
+  glob("training/**/*.pdf", (err, files) => err ? reject(err) : resolve(files))
+);
+
+for(const pdf of pdfs) {
+  // convert to txt by running the cli command `pdftotext <filename>.pdf`
+  execSync(`pdftotext ${pdf}`);
+}
+
 const files = await new Promise((resolve, reject) =>
-  glob("training/**/*.md", (err, files) => err ? reject(err) : resolve(files))
+  glob("training/**/*.txt", (err, files) => err ? reject(err) : resolve(files))
 );
 
 if(files.length == 0) {
@@ -38,7 +50,8 @@ console.log(`Added ${files.length} files to data.  Splitting text into chunks...
 
 const textSplitter = new CharacterTextSplitter({
   chunkSize: 2000,
-  separator: "\n"
+  chunkOverlap: 100,
+  separator: " "
 });
 
 let docs = [];
@@ -51,9 +64,11 @@ for (const d of data) {
   }
 }
 
+
 console.log("Initializing Store...");
 
 let store;
+try {
 if(pineconeIndex) {
   await PineconeStore.fromTexts(
     docs,
@@ -84,3 +99,7 @@ if(!pineconeIndex) {
 
 console.clear();
 console.log("VectorStore saved");
+} catch(e) {
+  console.log(e);
+  process.exit();
+}
